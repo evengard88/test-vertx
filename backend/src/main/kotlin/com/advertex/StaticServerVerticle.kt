@@ -77,7 +77,29 @@ class StaticServerVerticle : AbstractVerticle() {
             rc.response().end("Welcome to the protected resource!");
             rc.next()
         }
+        router.route("/callback_ya").handler {
+            var authProvider = OAuth2Auth.create(vertx, OAuth2FlowType.AUTH_CODE,
+                    OAuth2ClientOptions()
+                            .setSite("https://oauth.yandex.ru/")
+                            .setAuthorizationPath("/authorize")
+                            .setTokenPath("/token")
+//                        .setIntrospectionPath("/authorize")
+                            .setScopeSeparator(" ")
+                            .setClientID("a5899154ff094a61ac49c1c9f3e17377")
+                            .setClientSecret("ad121ce793d54294a4dbc8db02cf2e2c")
+            )
+            val codeParam = it.request().getParam("code");
+            println(codeParam)
 
+            authProvider.getToken(json { obj("code" to codeParam) },{
+
+                println(it)
+                println(it.result())
+                println(it.succeeded())
+                println(it.failed())
+            })
+            it.next()
+        }
 //        router.route("/callback").handler { event ->
 //
 //            val response = event.response()
@@ -135,7 +157,7 @@ class StaticServerVerticle : AbstractVerticle() {
 //        oauth2.addAuthority("profile")
 
 // setup the callback handler for receiving the GitHub callback
-        oauth2.setupCallback(router.get("/callback_ya2"))
+        oauth2.setupCallback(router.get("/callback_ya"))
 
         return oauth2
     }
