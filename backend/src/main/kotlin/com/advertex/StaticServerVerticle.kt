@@ -135,7 +135,7 @@ class StaticServerVerticle : AbstractVerticle() {
 //        oauth2.addAuthority("profile")
 
 // setup the callback handler for receiving the GitHub callback
-//        oauth2.setupCallback(router.get("/callback_ya2"))
+        oauth2.setupCallback(router.get("/callback_ya2"))
 
         return oauth2
     }
