@@ -98,7 +98,8 @@ class StaticServerVerticle : AbstractVerticle() {
                 println(it.succeeded())
                 println(it.failed())
             })
-            it.next()
+
+            it.response().end("haha")
         }
 //        router.route("/callback").handler { event ->
 //
